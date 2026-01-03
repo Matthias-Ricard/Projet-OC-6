@@ -20,3 +20,23 @@ fetch("http://localhost:5678/api/works")
     });
 
   });
+
+const filtersContainer = document.querySelector(".filters");
+
+fetch("http://localhost:5678/api/categories")
+  .then(response => response.json())
+  .then(categories => {
+
+    // bouton Tous
+    const allButton = document.createElement("button");
+    allButton.textContent = "Tous";
+    filtersContainer.appendChild(allButton);
+
+    // boutons catégories
+    categories.forEach(category => {
+      const button = document.createElement("button");
+      button.textContent = category.name;
+      filtersContainer.appendChild(button);
+    });
+  });
+
