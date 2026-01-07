@@ -1,22 +1,21 @@
-let allWorks = [];
+async function getWorks() {
+  try {
+    const response = await fetch("http://localhost:5678/api/works");
+    const works = await response.json();
+    
+    return works;
+    
+  } catch (error) {
+    console.log("error");
+  }
+}
 
-
-
-fetch("http://localhost:5678/api/works")
-  .then(response => response.json())
-  .then(works => {
-    allWorks = works;
-    displayWorks(works);
-
-  });
-
-  function displayWorks(works) {
+function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
-  gallery.innerHTML = ""; // on vide la galerie
+  gallery.innerHTML="";
 
-  works.forEach(work => {
+  for(const work of works) {
     const figure = document.createElement("figure");
-
     const img = document.createElement("img");
     img.src = work.imageUrl;
     img.alt = work.title;
@@ -27,51 +26,22 @@ fetch("http://localhost:5678/api/works")
     figure.appendChild(img);
     figure.appendChild(figcaption);
     gallery.appendChild(figure);
-  });
+
+  }
 }
 
-
-const filtersContainer = document.querySelector(".filters");
-
-fetch("http://localhost:5678/api/categories")
-  .then(response => response.json())
-  .then(categories => {
-
-    // bouton Tous
-    const allButton = document.createElement("button");
-    allButton.textContent = "Tous";
-
-    allButton.addEventListener("click", () => {
-    displayWorks(allWorks);
-    setActiveButton(allButton);
-    });
-
-filtersContainer.appendChild(allButton);
-
-
-    // boutons catégories
-  categories.forEach(category => {
-    const button = document.createElement("button");
-    button.textContent = category.name;
-
-    button.addEventListener("click", () => {
-      const filteredWorks = allWorks.filter(
-        work => work.categoryId === category.id
-      );
-      displayWorks(filteredWorks);
-      setActiveButton(button);
-    });
-
-    filtersContainer.appendChild(button);
-    });
-
-    
-});
-
-function setActiveButton(clickedButton) {
-  const buttons = document.querySelectorAll(".filters button");
-  buttons.forEach(button => {
-    button.classList.remove("active");
-  });
-  clickedButton.classList.add("active");
+async function getCategories() {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const categories = await response.json();
+    return categories;
+  } catch (error) {
+    console.log("error");
+  }
 }
+
+(async () => {
+  const works = await getWorks();
+  displayWorks(works);
+})();
+
