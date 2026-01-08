@@ -1,3 +1,8 @@
+let allWorks = [];
+
+
+// Fonction appel api
+
 async function getWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -9,6 +14,19 @@ async function getWorks() {
     console.log("error");
   }
 }
+
+async function getCategories() {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const categories = await response.json();
+    return categories;
+  } catch (error) {
+    console.log("error");
+  }
+}
+
+
+// fonction apparaître api
 
 function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
@@ -30,18 +48,53 @@ function displayWorks(works) {
   }
 }
 
-async function getCategories() {
-  try {
-    const response = await fetch("http://localhost:5678/api/categories");
-    const categories = await response.json();
-    return categories;
-  } catch (error) {
-    console.log("error");
+function setActiveButton(activeButton) {
+  const buttons = document.querySelectorAll(".filters button");
+
+  for (const button of buttons) {
+    button.classList.remove("active");
+  }
+
+  activeButton.classList.add("active");
+}
+
+function displayCategories(categories, allWorks) {
+  const filtersContainer = document.querySelector(".filters");
+
+  const allButton = document.createElement("button")
+  allButton.textContent = "Tous";
+  allButton.classList.add("active");
+  filtersContainer.appendChild(allButton);
+
+  allButton.addEventListener("click", () =>{
+    displayWorks(allWorks);
+    setActiveButton(allButton);
+  })
+
+  for(const category of categories) {
+    const button = document.createElement("button");
+    button.textContent = category.name;
+
+    button.addEventListener("click", () => {
+      const filtereWorks = allWorks.filter(
+        work => work.categoryId === category.id
+      );
+      displayWorks(filtereWorks);
+      setActiveButton(button);
+    });
+    filtersContainer.appendChild(button);
   }
 }
 
-(async () => {
-  const works = await getWorks();
-  displayWorks(works);
-})();
 
+(async () => {
+  allWorks = await getWorks();
+  if (allWorks) {
+    displayWorks(allWorks);
+  }
+
+  const categories = await getCategories();
+  if (categories) {
+    displayCategories(categories, allWorks);
+  }
+})();
