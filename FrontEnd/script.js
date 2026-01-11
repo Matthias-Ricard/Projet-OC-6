@@ -1,6 +1,5 @@
 let allWorks = [];
 
-
 // Fonction appel api
 
 async function getWorks() {
@@ -24,7 +23,6 @@ async function getCategories() {
     console.log("error");
   }
 }
-
 
 // fonction apparaître api
 
@@ -86,9 +84,9 @@ function displayCategories(categories, allWorks) {
   }
 }
 
-
-(async () => {
-  allWorks = await getWorks();
+async function init() {
+   allWorks = await getWorks();
+   console.log(allWorks)
   if (allWorks) {
     displayWorks(allWorks);
   }
@@ -97,4 +95,6 @@ function displayCategories(categories, allWorks) {
   if (categories) {
     displayCategories(categories, allWorks);
   }
-})();
+}
+
+init()
