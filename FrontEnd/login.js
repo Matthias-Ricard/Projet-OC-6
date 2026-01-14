@@ -4,16 +4,20 @@ const errorMessage = document.querySelector(".error-message")
 form.addEventListener("submit", async (event) =>{
     event.preventDefault();
 
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    let user = {
+        email: email,
+        password: password
+    }
 
     console.log(email, password)
 
     try {
-        const response = await fetch("http://127.0.0.1:5678/api/users/login", {
+        const response = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
-            heasers: { "Content-Type": "application/json"},
-            body: JSON.stringify({email, password})
+            heasers: {"Content-Type": "application/json"},
+            body: JSON.stringify({user})
         });
         if (!response.ok) {
             throw new Error("Erreur dans l'identifiant ou le mot de passe");
@@ -26,3 +30,4 @@ form.addEventListener("submit", async (event) =>{
         errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
     }
 })
+
