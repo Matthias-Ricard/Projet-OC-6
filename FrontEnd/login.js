@@ -10,8 +10,8 @@ form.addEventListener("submit", async (event) =>{
     console.log(email, password)
 
     try {
-        const response = await fetch("http://localhost:5678/api/users/login", {
-            method : "POST",
+        const response = await fetch("http://127.0.0.1:5678/api/users/login", {
+            method: "POST",
             heasers: { "Content-Type": "application/json"},
             body: JSON.stringify({email, password})
         });

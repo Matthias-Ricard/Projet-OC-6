@@ -269,3 +269,8 @@ footer nav ul {
 .active {
 	font-weight: bold;
 }
+
+.error-message {
+	color: red;
+  	padding-bottom: 10px;
+}
