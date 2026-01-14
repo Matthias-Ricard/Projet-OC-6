@@ -46,6 +46,12 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /** end reset css**/
 body {
 	max-width: 1140px;
@@ -208,4 +214,58 @@ footer nav ul {
 .filters button.active {
   background-color: #1D6154;
   color: white;
+}
+
+
+/* ***** Login ***** */
+
+.login {
+  width: 50%;
+  margin: 150px auto;
+  text-align: center;
+}
+
+.login h2 {
+  margin-bottom: 30px;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login label {
+  margin: 20px 0 10px;
+}
+
+.login input {
+  height: 50px;
+  font-size: 1.2em;
+  padding-left: 10px;
+}
+
+.login input[type="submit"] {
+  margin: 30px auto;
+  width: 180px;
+  border-radius: 60px;
+  background-color: #1D6154;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.forgot-password {
+  text-decoration: underline;
+  color: black;
+}
+
+.login input[type="email"],
+.login input[type="password"] {
+	box-shadow: 0px 4px 14px 0px #00000017;
+	border: none;
+}
+
+.active {
+	font-weight: bold;
 }
