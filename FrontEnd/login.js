@@ -1,44 +1,42 @@
-const form = document.querySelector("form")
+const form = document.querySelector("#login-form");
 
 
-form.addEventListener("submit", async (event) =>{
-    event.preventDefault();
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-    let user = {
-        email: email,
-        password: password
+  // Récupération des valeurs
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  // Création de l'objet utilisateur
+  const user = {
+    email: email,
+    password: password
+  };
+
+  try {
+    const response = await fetch("http://localhost:5678/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    });
+
+    // Login incorrect
+    if (!response.ok) {
+      throw new Error("Erreur dans l’identifiant ou le mot de passe");
     }
 
-    console.log(email, password)
+    const data = await response.json();
 
-    
-    fetch("http://localhost:5678/api/users/login", {
-        method: "POST",
-        heasers: {"Content-Type": "application/json"},
-        body: JSON.stringify({user})
-    })
+    // Login réussi
+    localStorage.setItem("token", data.token);
+    window.location.href = "index.html";
 
-    .then(response => response.json())
-
-    .then(data => {
-        if(data.token) {
-            localStorage.setItem("Token", data.token)
-            window.location.href = "index.html"
-        }
-        else {
-            let loginErreur = document.querySelector("#login-form")
-            let mdp = document.querySelector(".forgot-password")
-            let pErreur = document.querySelector(".error-message")
-
-            if (!pErreur) {
-                pErreur = document.createElement("p")
-                pErreur.classList.add("error-message")
-                loginErreur.insertBefore(pErreur, mdp)
-            }
-
-            pErreur.innerHTML = "Erreur dans l’identifiant ou le mot de passe !"
-        }
-    })
-})
+  } catch (error){
+    const errorMessage = document.querySelector("#p_erreur");
+    errorMessage.textContent = "Erreur dans l’identifiant ou le mot de passe !";
+    errorMessage.style.color = "red";
+  }
+});

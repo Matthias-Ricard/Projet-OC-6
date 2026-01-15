@@ -98,3 +98,50 @@ async function init() {
 }
 
 init()
+
+const loginLink = document.querySelector("a[href='login.html']");
+const editBanner = document.querySelector(".edit-banner");
+const editProjects = document.querySelector(".edit-projects");
+const filters = document.querySelector(".filters");
+
+// Vérifie si on est connecté
+const token = localStorage.getItem("token");
+
+function setModeEdition() {
+  // Afficher éléments admin
+  editBanner.style.display = "flex";
+  editProjects.style.display = "flex";
+  if (filters) filters.style.display = "none";
+
+  // Changer le lien en logout
+  loginLink.textContent = "logout";
+  loginLink.removeAttribute("href"); // retire le href pour éviter de suivre le lien
+}
+
+function setModePublic() {
+  // Masquer éléments admin
+  editBanner.style.display = "none";
+  editProjects.style.display = "none";
+  if (filters) filters.style.display = "flex";
+
+  // Remettre le lien login
+  loginLink.textContent = "login";
+  loginLink.href = "login.html";
+}
+
+// Initialisation selon token
+if (token) {
+  setModeEdition();
+}
+
+// Gestion du clic sur login/logout
+loginLink.addEventListener("click", (e) => {
+  if (loginLink.textContent === "logout") {
+    e.preventDefault(); // empêche la navigation
+    localStorage.removeItem("token");
+    setModePublic();
+  }
+  // sinon, c’est “login”, le lien fonctionne normalement
+});
+
+
