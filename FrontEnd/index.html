@@ -19,6 +19,58 @@
 		<i class="fa-regular fa-pen-to-square white_icon"></i>
 		<p>Mode édition</p>
 	</div>
+
+	<div class="modal-overlay">
+		<div class="modal">
+
+			<!-- Header -->
+			<div class="modal-header">
+			<i class="fa-solid fa-arrow-left modal-back"></i>
+			<i class="fa-solid fa-xmark modal-close"></i>
+			</div>
+
+			<!-- ===== VUE GALERIE ===== -->
+			<div class="modal-gallery">
+			<h3>Galerie photo</h3>
+
+			<div class="modal-gallery-grid">
+				<!-- images ajoutées en JS -->
+			</div>
+
+			<div class="modal-separator"></div>
+
+
+			<button class="modal-add-btn">Ajouter une photo</button>
+			</div>
+
+			<!-- ===== VUE FORMULAIRE ===== -->
+			<div class="modal-form">
+				<h3>Ajout photo</h3>
+
+				<div class="upload-zone">
+					<i class="fa-regular fa-image"></i>
+					<button type="button">+ Ajouter photo</button>
+					<p>jpg, png : 4mo max</p>
+				</div>
+
+				<form>
+					<label for="title">Titre</label>
+					<input type="text" id="title">
+
+					<label for="category">Catégorie</label>
+					<select id="category"></select>
+
+					<div class="modal-separator"></div>
+
+					<button type="submit">Valider</button>
+				</form>
+			</div>
+
+
+		</div>
+	</div>
+
+
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -50,7 +102,8 @@
 				<i class="fa-regular fa-pen-to-square black_icon"></i>
 				<button>modifier</button>
 			</div>
-		</div>	
+		</div>
+		
 		<div class="filters"></div>
 
 		

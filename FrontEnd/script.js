@@ -145,3 +145,82 @@ loginLink.addEventListener("click", (e) => {
 });
 
 
+// La modale *************************************
+
+const modalOverlay = document.querySelector(".modal-overlay");
+const modalClose = document.querySelector(".modal-close");
+const editButton = document.querySelector(".edit-projects button");
+const backArrow = document.querySelector(".modal-back");
+const addPhotoBtn = document.querySelector(".modal-add-btn");
+const modalGallery = document.querySelector(".modal-gallery-grid");
+const galleryView = document.querySelector(".modal-gallery");
+const formView = document.querySelector(".modal-form");
+
+
+// Ouvrir la modale et remplir la galerie
+async function openModal() {
+  modalOverlay.style.display = "flex";
+  const works = await getWorks();
+  displayModalWorks(works);
+}
+
+// Fermer la modale
+function closeModal() {
+  modalOverlay.style.display = "none";
+}
+
+// Aller vers le formulaire
+function showFormView() {
+  galleryView.style.display = "none";
+  formView.style.display = "block";
+  backArrow.style.visibility = "visible";
+}
+
+// Retour à la galerie
+function showGalleryView() {
+  formView.style.display = "none";
+  galleryView.style.display = "block";
+  backArrow.style.visibility = "hidden";
+}
+
+// Afficher les travaux dans la modale
+function displayModalWorks(works) {
+  modalGallery.innerHTML = "";
+  
+  for (const work of works) {
+    const figure = document.createElement("figure");
+    figure.classList.add("modal-work");
+
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("fa-solid", "fa-trash-can", "modal-delete");
+
+    figure.appendChild(img);
+    figure.appendChild(deleteIcon);
+    modalGallery.appendChild(figure);
+  }
+}
+
+// =======================
+// LISTENERS
+// =======================
+
+// Ouvrir modale
+editButton.addEventListener("click", openModal);
+
+// Fermer modale avec croix
+modalClose.addEventListener("click", closeModal);
+
+// Fermer modale en cliquant sur l’overlay
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+// Aller vers le formulaire
+addPhotoBtn.addEventListener("click", showFormView);
+
+// Retour à la galerie
+backArrow.addEventListener("click", showGalleryView);

@@ -94,7 +94,7 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
-
+	cursor: pointer;
 }
 nav li {
 	padding: 0 10px;
@@ -317,4 +317,230 @@ footer nav ul {
    	display: flex;
     align-items: baseline;
     justify-content: center;
+}
+
+/* La modale */
+
+/* Overlay sombre */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+/* Fenêtre */
+.modal {
+  background: white;
+  width: 630px;
+  height: 688px;
+  max-height: 90vh;
+  border-radius: 10px;
+  padding: 35px 65px;
+  position: relative;
+}
+
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 -20px;
+}
+
+.modal-close,
+.modal-back {
+  cursor: pointer;
+  font-size: 25px;
+	padding: 10px 0px;
+}
+
+
+/* Galerie */
+.modal-gallery {
+  text-align: center;
+}
+
+.modal-gallery-grid {
+	width: 525px;
+	margin: 40px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  
+}
+
+/* Formulaire */
+.modal-form {
+  display: none;
+  padding: 0 65px;
+  font-size: 17px;
+}
+
+.modal-back {
+  visibility: hidden;
+}
+
+.modal-work {
+  position: relative;
+  	margin-bottom: 15px;
+
+}
+
+.modal-work img {
+	width: 100%;
+	height: 100%;
+	top: 796px;
+	left: 853.2px;
+  	object-fit: cover;
+}
+
+.modal-delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: black;
+  color: white;
+  font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.modal h3 {
+  text-align: center;
+  font-size: 31px;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+
+.modal-separator {
+  border-top: 1px solid #B3B3B3;
+  margin: 40px 0 30px;
+}
+
+.modal-add-btn {
+  display: block;
+  margin: 0 auto;
+  background: #1D6154;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 10px 40px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+
+/* ===== ZONE AJOUT IMAGE ===== */
+
+.upload-zone {
+  background-color: #e8f1f6;
+  border-radius: 3px;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.upload-zone i {
+  font-size: 76px;
+  color: #b9c5cc;
+  margin-bottom: 10px;
+}
+
+.upload-zone button {
+  background-color: #cbd6dc;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 30px;
+  color: #306685;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.upload-zone p {
+  font-size: 10px;
+  color: #444;
+  margin-top: 7px;
+}
+
+/* ===== INPUTS ===== */
+.modal-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.modal-form input[type="text"] {
+  width: 100%;
+  height: 50px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+  border: none;
+  margin-bottom: 30px;
+}
+
+/* Select du formulaire */
+.modal-form select {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><polygon points="0,0 10,0 5,6" fill="%23333"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 10px 6px;
+  margin-bottom: 30px;
+}
+
+
+
+/* Flèche personnalisée */
+.modal-form select::-ms-expand {
+  display: none; /* IE */
+}
+
+/* Option si besoin */
+.modal-form select option {
+  color: #444;
+}
+
+
+/* ===== SEPARATEUR ===== */
+.modal-separator {
+  width: 100%;
+  height: 0px;
+  background-color: #b3b3b3;
+  margin: 40px 0px ;
+}
+
+/* ===== BOUTON VALIDER ===== */
+.modal-form button[type="submit"] {
+  width: 237px;
+  height: 36px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 60px;
+  border: none;
+  background-color: #a7a7a7;
+  color: white;
+  font-weight: 700;
+  cursor: not-allowed;
+  font-size: 17px;
 }
