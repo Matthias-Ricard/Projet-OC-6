@@ -198,11 +198,46 @@ function displayModalWorks(works) {
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("fa-solid", "fa-trash-can", "modal-delete");
 
+    deleteIcon.addEventListener("click", async () => {
+      await deleteWork(work.id);
+    });
+
     figure.appendChild(img);
     figure.appendChild(deleteIcon);
     modalGallery.appendChild(figure);
   }
 }
+
+async function deleteWork(workId) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch(
+      `http://localhost:5678/api/works/${workId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression");
+    }
+
+    // 🔄 Mise à jour des données
+    allWorks = allWorks.filter(work => work.id !== workId);
+
+    // 🔄 Mise à jour DOM
+    displayWorks(allWorks);
+    displayModalWorks(allWorks);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // =======================
 // LISTENERS
