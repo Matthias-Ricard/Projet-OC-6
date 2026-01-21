@@ -174,6 +174,15 @@ function showFormView() {
   galleryView.style.display = "none";
   formView.style.display = "block";
   backArrow.style.visibility = "visible";
+
+  // Réinitialiser le formulaire et l'aperçu
+  addPhotoForm.reset();
+  fileInput.value = "";
+  const oldPreview = uploadZone.querySelector("img");
+  if (oldPreview) oldPreview.remove();
+
+  // Remplir la liste des catégories
+  populateCategories();
 }
 
 // Retour à la galerie
@@ -259,3 +268,98 @@ addPhotoBtn.addEventListener("click", showFormView);
 
 // Retour à la galerie
 backArrow.addEventListener("click", showGalleryView);
+
+const uploadBtn = document.querySelector(".upload-zone button")
+const addPhotoForm = document.querySelector("#add-photo-form");
+const fileInput = document.querySelector("#image");
+const titleInput = document.querySelector("#title");
+const categorySelect = document.querySelector("#category");
+const uploadZone = document.querySelector(".upload-zone");
+const previewContainer = document.querySelector(".preview-container");
+
+addPhotoForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("token");
+
+  if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
+    alert("Veuillez remplir tous les champs");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", fileInput.files[0]);
+  formData.append("title", titleInput.value);
+  formData.append("category", categorySelect.value);
+
+  try {
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de l’envoi");
+    }
+
+    const newWork = await response.json();
+
+    
+    handleNewWork(newWork);
+
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+function handleNewWork(newWork) {
+  // 🔄 Mise à jour des données globales
+  allWorks.push(newWork);
+
+  // 🔄 Mise à jour des galeries
+  displayWorks(allWorks);
+  displayModalWorks(allWorks);
+
+  // 🔄 Retour à la galerie
+  showGalleryView();
+
+  // 🔄 Reset du formulaire
+  addPhotoForm.reset();
+  fileInput.value = "";
+}
+
+uploadBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(file);
+  img.alt = "Aperçu";
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "cover";
+
+  previewContainer.appendChild(img);
+});
+
+async function populateCategories() {
+  const select = document.querySelector("#category");
+  select.innerHTML = "";
+
+  const categories = await getCategories();
+
+  for (const category of categories) {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    select.appendChild(option);
+  }
+}
+
