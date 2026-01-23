@@ -48,11 +48,25 @@
 				<h3>Ajout photo</h3>
 
 				<div class="upload-zone">
+					<div class="upload-zone">
+
+					<div class="upload-placeholder">
+						<i class="fa-regular fa-image"></i>
+						<button type="button" class="upload-btn">+ Ajouter photo</button>
+						<p>jpg, png : 4mo max</p>
+					</div>
+
 					<div class="preview-container"></div>
-					<i class="fa-regular fa-image"></i>
-					<button type="button" id="upload-btn">+ Ajouter photo</button>
-					<p>jpg, png : 4mo max</p>
-					<input type="file" id="image" name="image" accept="image/png, image/jpeg" hidden>
+
+					<input
+						type="file"
+						id="image"
+						name="image"
+						accept="image/png, image/jpeg"
+						hidden
+					>
+					</div>
+
 				</div>
 
 				<form id="add-photo-form">

@@ -159,6 +159,7 @@ const formView = document.querySelector(".modal-form");
 
 // Ouvrir la modale et remplir la galerie
 async function openModal() {
+  showGalleryView();
   modalOverlay.style.display = "flex";
   const works = await getWorks();
   displayModalWorks(works);
@@ -276,6 +277,7 @@ const titleInput = document.querySelector("#title");
 const categorySelect = document.querySelector("#category");
 const uploadZone = document.querySelector(".upload-zone");
 const previewContainer = document.querySelector(".preview-container");
+const placeholder = document.querySelector(".upload-placeholder");
 
 addPhotoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -339,6 +341,8 @@ fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
+  previewContainer.innerHTML = "";
+
   const img = document.createElement("img");
   img.src = URL.createObjectURL(file);
   img.alt = "Aperçu";
@@ -346,7 +350,23 @@ fileInput.addEventListener("change", (event) => {
   img.style.height = "100%";
   img.style.objectFit = "cover";
 
+  const removeBtn = document.createElement("span");
+  removeBtn.classList.add("remove-preview");
+  removeBtn.innerHTML = "✕";
+
+  removeBtn.addEventListener("click", () => {
+    fileInput.value = "";
+    previewContainer.innerHTML = "";
+    previewContainer.style.display = "none";
+    placeholder.style.display = "flex";
+  });
+  
+
   previewContainer.appendChild(img);
+  previewContainer.appendChild(removeBtn);
+
+  placeholder.style.display = "none";
+  previewContainer.style.display = "block";
 });
 
 async function populateCategories() {
