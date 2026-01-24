@@ -105,7 +105,7 @@ const editProjects = document.querySelector(".edit-projects");
 const filters = document.querySelector(".filters");
 
 // Vérifie si on est connecté
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 
 function setModeEdition() {
   // Afficher éléments admin
@@ -138,7 +138,7 @@ if (token) {
 loginLink.addEventListener("click", (e) => {
   if (loginLink.textContent === "logout") {
     e.preventDefault(); // empêche la navigation
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setModePublic();
   }
   // sinon, c’est “login”, le lien fonctionne normalement
@@ -159,6 +159,7 @@ const formView = document.querySelector(".modal-form");
 
 // Ouvrir la modale et remplir la galerie
 async function openModal() {
+  resetAddPhotoForm();
   showGalleryView();
   modalOverlay.style.display = "flex";
   const works = await getWorks();
@@ -184,6 +185,7 @@ function showFormView() {
 
   // Remplir la liste des catégories
   populateCategories();
+  resetAddPhotoForm();
 }
 
 // Retour à la galerie
@@ -219,7 +221,7 @@ function displayModalWorks(works) {
 }
 
 async function deleteWork(workId) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   try {
     const response = await fetch(
@@ -282,7 +284,7 @@ const placeholder = document.querySelector(".upload-placeholder");
 addPhotoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
     alert("Veuillez remplir tous les champs");
@@ -383,3 +385,10 @@ async function populateCategories() {
   }
 }
 
+function resetAddPhotoForm() {
+    addPhotoForm.reset();
+    fileInput.value = "";
+    previewContainer.innerHTML = "";
+    previewContainer.style.display = "none";
+    placeholder.style.display = "flex";
+}
