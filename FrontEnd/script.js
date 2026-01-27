@@ -238,10 +238,10 @@ async function deleteWork(workId) {
       throw new Error("Erreur lors de la suppression");
     }
 
-    // 🔄 Mise à jour des données
+    // Mise à jour des données
     allWorks = allWorks.filter(work => work.id !== workId);
 
-    // 🔄 Mise à jour DOM
+    // Mise à jour DOM
     displayWorks(allWorks);
     displayModalWorks(allWorks);
 
@@ -320,17 +320,17 @@ addPhotoForm.addEventListener("submit", async (e) => {
 });
 
 function handleNewWork(newWork) {
-  // 🔄 Mise à jour des données globales
+  //  Mise à jour des données globales
   allWorks.push(newWork);
 
-  // 🔄 Mise à jour des galeries
+  //  Mise à jour des galeries
   displayWorks(allWorks);
   displayModalWorks(allWorks);
 
-  // 🔄 Retour à la galerie
+  //  Retour à la galerie
   showGalleryView();
 
-  // 🔄 Reset du formulaire
+  //  Reset du formulaire
   addPhotoForm.reset();
   fileInput.value = "";
 }
