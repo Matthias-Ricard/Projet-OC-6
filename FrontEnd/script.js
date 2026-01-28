@@ -280,6 +280,9 @@ const categorySelect = document.querySelector("#category");
 const uploadZone = document.querySelector(".upload-zone");
 const previewContainer = document.querySelector(".preview-container");
 const placeholder = document.querySelector(".upload-placeholder");
+const submitBtn = document.querySelector(".modal-submit-btn");
+console.log(submitBtn);
+
 
 addPhotoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -369,6 +372,9 @@ fileInput.addEventListener("change", (event) => {
 
   placeholder.style.display = "none";
   previewContainer.style.display = "block";
+
+  updateSubmitButton();
+
 });
 
 async function populateCategories() {
@@ -391,4 +397,26 @@ function resetAddPhotoForm() {
     previewContainer.innerHTML = "";
     previewContainer.style.display = "none";
     placeholder.style.display = "flex";
+
+    updateSubmitButton();
 }
+
+function updateSubmitButton() {
+  console.log("updateSubmitButton appelée");
+  console.log("file :", fileInput.files.length);
+  console.log("title :", titleInput.value);
+  
+  if (
+    fileInput.files.length > 0 &&
+    titleInput.value.trim() !== ""
+  ) {
+    submitBtn.classList.add("active");
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.classList.remove("active");
+    submitBtn.disabled = true;
+  }
+}
+
+
+titleInput.addEventListener("input", updateSubmitButton);

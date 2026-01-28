@@ -441,6 +441,12 @@ footer nav ul {
 }
 
 
+.modal-submit-btn.active {
+  background-color: #1d6154;
+  cursor: pointer;
+}
+
+
 /* ===== ZONE AJOUT IMAGE ===== */
 
 .upload-zone {
@@ -550,7 +556,7 @@ footer nav ul {
 }
 
 /* ===== BOUTON VALIDER ===== */
-.modal-form button[type="submit"] {
+.modal-submit-btn {
   width: 237px;
   height: 36px;
   margin: 0 auto;
