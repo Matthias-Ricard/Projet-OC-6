@@ -1,4 +1,40 @@
 let allWorks = [];
+const modalOverlay = document.querySelector(".modal-overlay");
+const modalClose = document.querySelector(".modal-close");
+const editButton = document.querySelector(".edit-projects button");
+const backArrow = document.querySelector(".modal-back");
+const addPhotoBtn = document.querySelector(".modal-add-btn");
+const modalGallery = document.querySelector(".modal-gallery-grid");
+const galleryView = document.querySelector(".modal-gallery");
+const loginLink = document.querySelector("a[href='login.html']");
+const editBanner = document.querySelector(".edit-banner");
+const editProjects = document.querySelector(".edit-projects");
+const filters = document.querySelector(".filters");
+const formView = document.querySelector(".modal-form");
+const uploadBtn = document.querySelector(".upload-zone button")
+const addPhotoForm = document.querySelector("#add-photo-form");
+const fileInput = document.querySelector("#image");
+const titleInput = document.querySelector("#title");
+const categorySelect = document.querySelector("#category");
+const uploadZone = document.querySelector(".upload-zone");
+const previewContainer = document.querySelector(".preview-container");
+const placeholder = document.querySelector(".upload-placeholder");
+const submitBtn = document.querySelector(".modal-submit-btn");
+
+async function init() {
+   allWorks = await getWorks();
+   console.log(allWorks)
+  if (allWorks) {
+    displayWorks(allWorks);
+  }
+
+  const categories = await getCategories();
+  if (categories) {
+    displayCategories(categories, allWorks);
+  }
+}
+
+init()
 
 // Fonction appel api
 
@@ -84,26 +120,6 @@ function displayCategories(categories, allWorks) {
   }
 }
 
-async function init() {
-   allWorks = await getWorks();
-   console.log(allWorks)
-  if (allWorks) {
-    displayWorks(allWorks);
-  }
-
-  const categories = await getCategories();
-  if (categories) {
-    displayCategories(categories, allWorks);
-  }
-}
-
-init()
-
-const loginLink = document.querySelector("a[href='login.html']");
-const editBanner = document.querySelector(".edit-banner");
-const editProjects = document.querySelector(".edit-projects");
-const filters = document.querySelector(".filters");
-
 // Vérifie si on est connecté
 const token = sessionStorage.getItem("token");
 
@@ -133,28 +149,6 @@ function setModePublic() {
 if (token) {
   setModeEdition();
 }
-
-// Gestion du clic sur login/logout
-loginLink.addEventListener("click", (e) => {
-  if (loginLink.textContent === "logout") {
-    e.preventDefault(); // empêche la navigation
-    sessionStorage.removeItem("token");
-    setModePublic();
-  }
-  // sinon, c’est “login”, le lien fonctionne normalement
-});
-
-
-// La modale *************************************
-
-const modalOverlay = document.querySelector(".modal-overlay");
-const modalClose = document.querySelector(".modal-close");
-const editButton = document.querySelector(".edit-projects button");
-const backArrow = document.querySelector(".modal-back");
-const addPhotoBtn = document.querySelector(".modal-add-btn");
-const modalGallery = document.querySelector(".modal-gallery-grid");
-const galleryView = document.querySelector(".modal-gallery");
-const formView = document.querySelector(".modal-form");
 
 
 // Ouvrir la modale et remplir la galerie
@@ -251,6 +245,65 @@ async function deleteWork(workId) {
 }
 
 
+
+function handleNewWork(newWork) {
+  //  Mise à jour des données globales
+  allWorks.push(newWork);
+
+  //  Mise à jour des galeries
+  displayWorks(allWorks);
+  displayModalWorks(allWorks);
+
+  //  Retour à la galerie
+  showGalleryView();
+
+  //  Reset du formulaire
+  addPhotoForm.reset();
+  fileInput.value = "";
+}
+
+
+async function populateCategories() {
+  const select = document.querySelector("#category");
+  select.innerHTML = "";
+
+  const categories = await getCategories();
+
+  for (const category of categories) {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    select.appendChild(option);
+  }
+}
+
+function resetAddPhotoForm() {
+    addPhotoForm.reset();
+    fileInput.value = "";
+    previewContainer.innerHTML = "";
+    previewContainer.style.display = "none";
+    placeholder.style.display = "flex";
+
+    updateSubmitButton();
+}
+
+function updateSubmitButton() {
+  console.log("updateSubmitButton appelée");
+  console.log("file :", fileInput.files.length);
+  console.log("title :", titleInput.value);
+
+  if (
+    fileInput.files.length > 0 &&
+    titleInput.value.trim() !== ""
+  ) {
+    submitBtn.classList.add("active");
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.classList.remove("active");
+    submitBtn.disabled = true;
+  }
+}
+
 // =======================
 // LISTENERS
 // =======================
@@ -272,16 +325,7 @@ addPhotoBtn.addEventListener("click", showFormView);
 // Retour à la galerie
 backArrow.addEventListener("click", showGalleryView);
 
-const uploadBtn = document.querySelector(".upload-zone button")
-const addPhotoForm = document.querySelector("#add-photo-form");
-const fileInput = document.querySelector("#image");
-const titleInput = document.querySelector("#title");
-const categorySelect = document.querySelector("#category");
-const uploadZone = document.querySelector(".upload-zone");
-const previewContainer = document.querySelector(".preview-container");
-const placeholder = document.querySelector(".upload-placeholder");
-const submitBtn = document.querySelector(".modal-submit-btn");
-console.log(submitBtn);
+
 
 
 addPhotoForm.addEventListener("submit", async (e) => {
@@ -322,22 +366,6 @@ addPhotoForm.addEventListener("submit", async (e) => {
   }
 });
 
-function handleNewWork(newWork) {
-  //  Mise à jour des données globales
-  allWorks.push(newWork);
-
-  //  Mise à jour des galeries
-  displayWorks(allWorks);
-  displayModalWorks(allWorks);
-
-  //  Retour à la galerie
-  showGalleryView();
-
-  //  Reset du formulaire
-  addPhotoForm.reset();
-  fileInput.value = "";
-}
-
 uploadBtn.addEventListener("click", () => {
   fileInput.click();
 });
@@ -377,46 +405,14 @@ fileInput.addEventListener("change", (event) => {
 
 });
 
-async function populateCategories() {
-  const select = document.querySelector("#category");
-  select.innerHTML = "";
-
-  const categories = await getCategories();
-
-  for (const category of categories) {
-    const option = document.createElement("option");
-    option.value = category.id;
-    option.textContent = category.name;
-    select.appendChild(option);
+// Gestion du clic sur login/logout
+loginLink.addEventListener("click", (e) => {
+  if (loginLink.textContent === "logout") {
+    e.preventDefault(); // empêche la navigation
+    sessionStorage.removeItem("token");
+    setModePublic();
   }
-}
-
-function resetAddPhotoForm() {
-    addPhotoForm.reset();
-    fileInput.value = "";
-    previewContainer.innerHTML = "";
-    previewContainer.style.display = "none";
-    placeholder.style.display = "flex";
-
-    updateSubmitButton();
-}
-
-function updateSubmitButton() {
-  console.log("updateSubmitButton appelée");
-  console.log("file :", fileInput.files.length);
-  console.log("title :", titleInput.value);
-  
-  if (
-    fileInput.files.length > 0 &&
-    titleInput.value.trim() !== ""
-  ) {
-    submitBtn.classList.add("active");
-    submitBtn.disabled = false;
-  } else {
-    submitBtn.classList.remove("active");
-    submitBtn.disabled = true;
-  }
-}
-
+  // sinon, c’est “login”, le lien fonctionne normalement
+});
 
 titleInput.addEventListener("input", updateSubmitButton);
